@@ -117,8 +117,9 @@ prompt_pure_setup() {
 	# show username@host if logged in through SSH
 	[[ "$SSH_CONNECTION" != '' ]] && prompt_pure_username='%n@%m '
 
-	# prompt turns red if the previous command didn't exit with 0
-	PROMPT='%(?.%F{magenta}.%F{red})❯%f '
+  # Add jobs if we have any
+  # prompt turns red if the previous command didn't exit with 0
+  PROMPT='%F{yellow}[`jobs | wc -l | sed "s/^[[:space:]]*//;s/[[:space:]]*$//"`] %F{PROMPT}%(?.%F{magenta}.%F{red})❯%f '
 }
 
 prompt_pure_setup "$@"
