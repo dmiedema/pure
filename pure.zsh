@@ -128,7 +128,7 @@ prompt_pure_setup() {
 
   # Add jobs if we have any
   # prompt turns red if the previous command didn't exit with 0
-	PROMPT='%(?.%F{magenta}.%F{red})${PURE_PROMPT_SYMBOL:-❯}%f '
+  PROMPT='%F{yellow}[`jobs | wc -l | sed "s/^[[:space:]]*//;s/[[:space:]]*$//"`] %F{PROMPT}%(?.%F{magenta}.%F{red})${PURE_PROMPT_SYMBOL:-❯}%f '
 }
 
 prompt_pure_setup "$@"
