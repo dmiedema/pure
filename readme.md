@@ -126,7 +126,9 @@ To have commands colorized as seen in the screenshot install [zsh-syntax-highlig
 
 ### [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh)
 
-Symlink (or copy) `pure.zsh` to `~/.oh-my-zsh/custom/pure.zsh-theme` and add `ZSH_THEME="pure"` to your `.zshrc` file.
+1. Symlink (or copy) `pure.zsh` to `~/.oh-my-zsh/custom/pure.zsh-theme`
+2. Symlink (or copy) `async.zsh` to `~/.oh-my-zsh/custom/async.zsh`
+3. Add `ZSH_THEME="pure"` to your `.zshrc` file.
 
 ### [prezto](https://github.com/sorin-ionescu/prezto)
 
@@ -134,8 +136,12 @@ Set `zstyle ':prezto:module:prompt' theme 'pure'` in `~/.zpreztorc`.
 
 ### [antigen](https://github.com/zsh-users/antigen)
 
-Add `antigen bundle sindresorhus/pure` to your .zshrc file (do not use the `antigen theme` function).
+Update your `.zshrc` file with the following two lines (order matters). Do not use the `antigen theme` function.
 
+```
+antigen bundle mafredri/zsh-async
+antigen bundle sindresorhus/pure
+```
 
 ## FAQ
 
@@ -144,6 +150,20 @@ Add `antigen bundle sindresorhus/pure` to your .zshrc file (do not use the `anti
 [This is a known issue](https://github.com/sindresorhus/pure/issues/76).
 Using `git pull` when you get the username prompt should help you to break the loop by giving you a real prompt for this. **[This has been fixed in git 2.3](https://github.com/sindresorhus/pure/commit/f43ab97e1cf4a276b7a6e33eac055ee16610be15)**
 
+### I am seeing the error `zpty: can't open pseudo terminal: bad file descriptor`.
+
+[This is a known issue](https://github.com/sindresorhus/pure/issues/117). `zsh/zpty` requires either legacy bsd ptys or access to `/dev/ptmx`. Here are some known solutions.
+
+#### Gentoo
+
+```
+sudo sh -c "echo 'SANDBOX_WRITE=\"/dev/ptmx\"' > /etc/sandbox.d/10zsh"
+sudo emerge -1 zsh
+```
+
+#### FreeBSD 10.1
+
+On a default setup, running the command `kldload pty` should do the trick. If you have a custom kernel, you might need to add `device pty` to the configuration file ([example](https://github.com/nbari/freebsd/blob/58646a9c3c4aaabf6f6467ff505f27f09e29dc75/kernels/xen.kernel#L188)).
 
 ## Team
 
