@@ -11,7 +11,7 @@ Most prompts are cluttered, ugly and slow. I wanted something visually pleasing 
 
 ### Why?
 
-- Comes with the perfect prompt character.  
+- Comes with the perfect prompt character.
   Author went through the whole Unicode range to find it.
 - Shows `git` branch and whether it's dirty (with a `*`).
 - Indicates when you have unpushed/unpulled `git` commits with up/down arrows. *(Check is done asynchronously!)*
@@ -39,7 +39,7 @@ That's it. Skip to [Getting started](#getting-started).
 1. Either…
   - Clone this repo
   - add it as a submodule, or
-  - just download `pure.zsh`
+  - just download `pure.zsh` and `async.zsh`
 
 2. Symlink `pure.zsh` to somewhere in [`$fpath`](http://www.refining-linux.org/archives/46/ZSH-Gem-12-Autoloading-functions/) with the name `prompt_pure_setup`.
 
@@ -125,19 +125,18 @@ prompt pure
 
 ## Tips
 
-[Tomorrow Night Eighties](https://github.com/chriskempson/tomorrow-theme) theme with the [Droid Sans Mono](http://www.google.com/webfonts/specimen/Droid+Sans+Mono) font (15pt) is a beautiful combination, as seen in the screenshot above. Just make sure you have anti-aliasing enabled in your Terminal.
+[Tomorrow Night Eighties](https://github.com/chriskempson/tomorrow-theme) theme with the [Droid Sans Mono](http://www.google.com/webfonts/specimen/Droid+Sans+Mono) font (15pt) is a beautiful combination, as seen in the screenshot above.<sup>1</sup> Just make sure you have anti-aliasing enabled in your Terminal.
 
 To have commands colorized as seen in the screenshot install [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting).
 
+<sup>1</sup> <sub>The screenshot shows the theme colors interpreted in the sRGB color space rather than the Generic RGB color space in which the theme is specified. Thus, the colors differ slightly from the theme's regular appearance.</sub>
 
 ## Integration
 
 ### [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh)
 
-1. Remove competing theme included in oh-my-zsh `~/.oh-my-zsh/themes/pure.zsh-theme`
-2. Symlink (or copy) `pure.zsh` to `~/.oh-my-zsh/custom/pure.zsh-theme`
-3. Symlink (or copy) `async.zsh` to `~/.oh-my-zsh/custom/async.zsh`
-4. Add `ZSH_THEME="pure"` to your `.zshrc` file.
+1. Symlink (or copy) `pure.zsh` to `~/.oh-my-zsh/custom/themes/pure.zsh-theme`.
+2. Set `ZSH_THEME="pure"` in your `.zshrc` file.
 
 ### [prezto](https://github.com/sorin-ionescu/prezto)
 
