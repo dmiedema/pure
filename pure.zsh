@@ -466,7 +466,14 @@ prompt_pure_setup() {
 	PROMPT+='%(?.%F{magenta}.%F{red})${PURE_PROMPT_SYMBOL:-❯}%f '
   # Add jobs if we have any
   # prompt turns red if the previous command didn't exit with 0
-  PROMPT='%F{yellow}[`jobs -p | wc -l | sed "s/^[[:space:]]*//;s/[[:space:]]*$//"`] %F{PROMPT}%(?.%F{magenta}.%F{red})${PURE_PROMPT_SYMBOL:-❯}%f '
+    # What this does is
+    # 1. Gets our current jobs
+    # 2. Removes lines that contain (pwd ...). If we suspend a job then change
+    #   directories that adds a line saying our nnow pwd which we don't
+    #   care about really.
+    # 3. Count our lines
+    # 4. Remove any leading & traling spaces
+  PROMPT='%F{yellow}[`jobs -p | sed '/(pwd.*)/d' | wc -l | sed "s/^[[:space:]]*//;s/[[:space:]]*$//"`] %F{PROMPT}%(?.%F{magenta}.%F{red})${PURE_PROMPT_SYMBOL:-❯}%f '
 }
 
 prompt_pure_setup "$@"
