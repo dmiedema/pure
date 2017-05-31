@@ -460,13 +460,13 @@ prompt_pure_setup() {
 	# show username@host if root, with username in white
 	[[ $UID -eq 0 ]] && prompt_pure_username='%F{white}%n%f%F{242}@%m%f'
 
-  # Add jobs if we have any
-  # prompt turns red if the previous command didn't exit with 0
-  PROMPT='%F{yellow}[`jobs -p | wc -l | sed "s/^[[:space:]]*//;s/[[:space:]]*$//"`] %F{PROMPT}%(?.%F{magenta}.%F{red})${PURE_PROMPT_SYMBOL:-❯}%f '
 	# if a virtualenv is activated, display it in grey
 	PROMPT='%(12V.%F{242}%12v%f .)'
 	# prompt turns red if the previous command didn't exit with 0
 	PROMPT+='%(?.%F{magenta}.%F{red})${PURE_PROMPT_SYMBOL:-❯}%f '
+  # Add jobs if we have any
+  # prompt turns red if the previous command didn't exit with 0
+  PROMPT='%F{yellow}[`jobs -p | wc -l | sed "s/^[[:space:]]*//;s/[[:space:]]*$//"`] %F{PROMPT}%(?.%F{magenta}.%F{red})${PURE_PROMPT_SYMBOL:-❯}%f '
 }
 
 prompt_pure_setup "$@"
