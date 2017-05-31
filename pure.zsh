@@ -52,15 +52,6 @@ prompt_pure_check_cmd_exec_time() {
 	}
 }
 
-prompt_pure_clear_screen() {
-	# enable output to terminal
-	zle -I
-	# clear screen and move cursor to (0, 0)
-	print -n '\e[2J\e[0;0H'
-	# Redraw prompt.
-	zle .reset-prompt
-}
-
 prompt_pure_set_title() {
 	# emacs terminal does not support settings the title
 	(( ${+EMACS} )) && return
@@ -140,7 +131,7 @@ prompt_pure_preprompt_render() {
 
 	local cleaned_ps1=$PROMPT
 	local -H MATCH
-	if [[ $PROMPT =~ $prompt_newline ]]; then
+	if [[ $PROMPT = *$prompt_newline* ]]; then
 		# When the prompt contains newlines, we keep everything before the first
 		# and after the last newline, leaving us with everything except the
 		# preprompt. This is needed because some software prefixes the prompt
@@ -184,6 +175,10 @@ prompt_pure_precmd() {
 
 	# preform async git dirty check and fetch
 	prompt_pure_async_tasks
+
+	# store name of virtualenv in psvar if activated
+	psvar[12]=
+	[[ -n $VIRTUAL_ENV ]] && psvar[12]="${VIRTUAL_ENV:t}"
 
 	# print the preprompt
 	prompt_pure_preprompt_render "precmd"
@@ -405,7 +400,7 @@ prompt_pure_async_callback() {
 			# When prompt_pure_git_last_dirty_check_timestamp is set, the git info is displayed in a different color.
 			# To distinguish between a "fresh" and a "cached" result, the preprompt is rendered before setting this
 			# variable. Thus, only upon next rendering of the preprompt will the result appear in a different color.
-			(( $exec_time > 2 )) && prompt_pure_git_last_dirty_check_timestamp=$EPOCHSECONDS
+			(( $exec_time > 5 )) && prompt_pure_git_last_dirty_check_timestamp=$EPOCHSECONDS
 			;;
 		prompt_pure_async_git_fetch|prompt_pure_async_git_arrows)
 			# prompt_pure_async_git_fetch executes prompt_pure_async_git_arrows
@@ -434,6 +429,9 @@ prompt_pure_setup() {
 	# Prevent percentage showing up if output doesn't end with a newline.
 	export PROMPT_EOL_MARK=''
 
+	# disallow python virtualenvs from updating the prompt
+	export VIRTUAL_ENV_DISABLE_PROMPT=1
+
 	prompt_opts=(subst percent)
 
 	# borrowed from promptinit, sets the prompt options in case pure was not
@@ -456,13 +454,6 @@ prompt_pure_setup() {
 	add-zsh-hook precmd prompt_pure_precmd
 	add-zsh-hook preexec prompt_pure_preexec
 
-	# if the user has not registered a custom zle widget for clear-screen,
-	# override the builtin one so that the preprompt is displayed correctly when
-	# ^L is issued.
-	if [[ $widgets[clear-screen] == 'builtin' ]]; then
-		zle -N clear-screen prompt_pure_clear_screen
-	fi
-
 	# show username@host if logged in through SSH
 	[[ "$SSH_CONNECTION" != '' ]] && prompt_pure_username='%F{242}%n@%m%f'
 
@@ -471,7 +462,11 @@ prompt_pure_setup() {
 
   # Add jobs if we have any
   # prompt turns red if the previous command didn't exit with 0
-  PROMPT='%F{yellow}[`jobs | wc -l | sed "s/^[[:space:]]*//;s/[[:space:]]*$//"`] %F{PROMPT}%(?.%F{magenta}.%F{red})${PURE_PROMPT_SYMBOL:-❯}%f '
+  PROMPT='%F{yellow}[`jobs -p | wc -l | sed "s/^[[:space:]]*//;s/[[:space:]]*$//"`] %F{PROMPT}%(?.%F{magenta}.%F{red})${PURE_PROMPT_SYMBOL:-❯}%f '
+	# if a virtualenv is activated, display it in grey
+	PROMPT='%(12V.%F{242}%12v%f .)'
+	# prompt turns red if the previous command didn't exit with 0
+	PROMPT+='%(?.%F{magenta}.%F{red})${PURE_PROMPT_SYMBOL:-❯}%f '
 }
 
 prompt_pure_setup "$@"

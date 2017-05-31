@@ -95,7 +95,7 @@ Set `PURE_GIT_UNTRACKED_DIRTY=0` to not include untracked files in dirtiness che
 
 ### `PURE_GIT_DELAY_DIRTY_CHECK`
 
-Time in seconds to delay git dirty checking for large repositories (git status takes > 2 seconds). The check is performed asynchronously, this is to save CPU. Defaults to `1800` seconds.
+Time in seconds to delay git dirty checking for large repositories (git status takes > 5 seconds). The check is performed asynchronously, this is to save CPU. Defaults to `1800` seconds.
 
 ### `PURE_PROMPT_SYMBOL`
 
@@ -186,12 +186,6 @@ zplug sindresorhus/pure, use:pure.zsh, from:github, as:theme
 ```
 
 ## FAQ
-
-### My preprompt is missing when I clear the screen with Ctrl+L
-
-Pure doesn't register its custom *clear-screen* widget if it has been previously modified. If you haven't registered your own zle widget with `zle -N clear-screen custom-clear-screen` it might have been done by third-party modules. For example `zsh-syntax-highlighting` and `zsh-history-substring-search` are known to do this and they should for that reason be **the very last thing** in your `.zshrc` (as pointed out in their documentation).
-
-To find out the culprit that is overriding your *clear-screen* widget, you can run the following command: `zle -l | grep clear-screen`.
 
 ### I am stuck in a shell loop in my terminal that ask me to authenticate. What should I do ?
 
