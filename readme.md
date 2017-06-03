@@ -1,3 +1,10 @@
+# 🚨 Not Maintained 🚨
+## 😱
+
+See [this comment](https://github.com/cosminlupu/pure/commit/4853d440dfe601d180955f4ec8af582d7f0af00e#commitcomment-20540755) as to _why_
+
+Only keeping the repository around to preserve the comments in case someone else stumbles across this looking for the same functionality.
+
 # Pure
 
 > Pretty, minimal and fast ZSH prompt
